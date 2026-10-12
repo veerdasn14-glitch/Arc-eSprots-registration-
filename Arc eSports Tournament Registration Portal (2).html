@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARC eSports // eFootball 16-Player Cup Registration</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Space Grotesk"', 'monospace'],
+          },
+          colors: {
+            arc: {
+              void: '#07090E',
+              bg: '#0A0D14',
+              card: '#0E131D',
+              surface: '#141A26',
+              surfaceHover: '#1B2333',
+              border: 'rgba(255, 255, 255, 0.08)',
+              borderLight: 'rgba(255, 255, 255, 0.16)',
+              cyan: '#00F2FE',
+              cyanDark: '#0284c7',
+              cyanGlow: 'rgba(0, 242, 254, 0.2)',
+              dim: '#64748B',
+              slate: '#94A3B8',
+              emerald: '#10B981',
+              rose: '#F43F5E',
+              amber: '#F59E0B'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07090E;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1B2333;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #2A364F;
+    }
+
+    .glow-cyan {
+      box-shadow: 0 0 30px -4px rgba(0, 242, 254, 0.25);
+    }
+    .glow-card {
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6);
+    }
+    .neon-border {
+      border: 1px solid rgba(0, 242, 254, 0.3);
+    }
+    .neon-border:focus-within {
+      border-color: #00F2FE;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-arc-void text-slate-100 min-h-screen font-sans antialiased selection:bg-arc-cyan selection:text-black flex flex-col justify-between">
+
+  <header class="border-b border-arc-border bg-arc-void/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <!-- Arc Branding -->
+      <div class="flex items-center space-x-3.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#00F2FE] to-[#4FACFE] p-[1.5px] flex items-center justify-center shadow-lg">
+          <div class="w-full h-full bg-arc-void rounded-[10px] flex items-center justify-center">
+            <span class="font-mono font-bold text-xs text-arc-cyan tracking-wider">ARC</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-mono text-sm tracking-wider font-extrabold text-white uppercase">ARC ESPORTS</span>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-arc-surface text-arc-cyan border border-arc-border font-mono font-bold tracking-wider">OFFICIAL</span>
+          </div>
+          <p class="text-[11px] text-arc-dim font-medium leading-none">eFootball 16-Player Cup Registration</p>
+        </div>
+      </div>
+
+      <!-- Header Action Controls -->
+      <div class="flex items-center space-x-2.5">
+        <!-- Google Sheet Quick Link -->
+        <a href="https://docs.google.com/spreadsheets/d/1cPXCd_FT7XIxgbuIFkaogqr8cRvSYUAyi2Jp6gzAlUU/edit" target="_blank" class="hidden sm:flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-arc-border bg-arc-card text-arc-slate hover:text-white hover:border-arc-borderLight text-xs font-mono transition">
+          <svg class="w-3.5 h-3.5 text-arc-emerald" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 7h10v2H7zm0 4h10v2H7zm0 4h7v2H7z"/></svg>
+          <span>Live Sheet</span>
+        </a>
+
+        <!-- Sheets Deployment Help Guide -->
+        <button id="btnOpenScriptGuide" class="px-3 py-1.5 text-xs font-mono font-medium rounded-xl border border-arc-border bg-arc-card text-arc-dim hover:text-white hover:border-arc-borderLight transition flex items-center space-x-1.5">
+          <svg class="w-3.5 h-3.5 text-arc-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span class="hidden md:inline">Apps Script</span> Setup
+        </button>
+
+        <!-- Admin Portal Trigger (PIN: 140612) -->
+        <button id="btnOpenAdmin" class="px-3.5 py-1.5 text-xs font-mono font-bold rounded-xl border border-arc-cyan/30 bg-arc-cyan/10 text-arc-cyan hover:bg-arc-cyan/20 transition flex items-center space-x-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+          <span>Admin Portal</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 w-full">
+    <div class="p-4 sm:p-5 rounded-2xl bg-arc-card border border-arc-border flex flex-col md:flex-row items-center justify-between gap-4 glow-card">
+      <div class="flex items-center space-x-3.5 w-full md:w-auto">
+        <div id="slotIndicatorDot" class="w-3.5 h-3.5 rounded-full bg-arc-cyan animate-pulse shrink-0"></div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-mono text-xs uppercase font-extrabold tracking-wider text-white">BRACKET AVAILABILITY</span>
+            <span id="slotStatusPill" class="text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-arc-cyan/15 text-arc-cyan border border-arc-cyan/30 tracking-wider">OPEN</span>
+          </div>
+          <p id="slotDescription" class="text-xs text-arc-dim font-sans mt-0.5">Strict 16-player limit. Slots lock permanently once payment UTR is verified.</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-5 w-full md:w-auto justify-between md:justify-end">
+        <div class="text-right">
+          <span class="text-2xl sm:text-3xl font-mono font-extrabold text-white tracking-wider" id="slotRatioText">0<span class="text-arc-dim text-lg">/16</span></span>
+          <span class="text-[10px] text-arc-dim block font-mono leading-none tracking-wider mt-0.5" id="remainingSlotsSub">16 SLOTS REMAINING</span>
+        </div>
+        <div class="w-32 sm:w-44 bg-arc-surface h-3 rounded-full overflow-hidden border border-arc-border">
+          <div id="slotProgressBar" class="bg-gradient-to-r from-arc-cyan to-[#4FACFE] h-full transition-all duration-500 rounded-full" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-6 w-full flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- Left Column: Registration Form (7 cols) -->
+    <div class="lg:col-span-7 space-y-5">
+      
+      <!-- Lockout Alert (Appears when all 16 slots fill up) -->
+      <div id="fullBracketAlert" class="hidden p-6 rounded-2xl border border-arc-rose/40 bg-arc-card text-center space-y-3">
+        <div class="w-12 h-12 mx-auto rounded-full bg-arc-rose/10 border border-arc-rose/30 flex items-center justify-center">
+          <svg class="w-6 h-6 text-arc-rose" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        </div>
+        <h2 class="font-mono text-base font-bold text-white tracking-wider">REGISTRATION REACHED 16/16 CAPACITY</h2>
+        <p class="text-xs text-arc-dim max-w-sm mx-auto">All tournament slots have been secured. Contact tournament admins for standby or substitute openings.</p>
+      </div>
+
+      <!-- Registration Form Container -->
+      <div id="formSection" class="bg-arc-card border border-arc-border rounded-2xl p-6 sm:p-7 glow-card">
+        <div class="border-b border-arc-border pb-4 mb-5 flex items-center justify-between">
+          <div>
+            <h2 class="font-mono text-sm font-bold text-white tracking-wider uppercase flex items-center space-x-2">
+              <span class="w-2 h-2 rounded-full bg-arc-cyan"></span>
+              <span>COMPETITOR ENTRY & PAYMENT</span>
+            </h2>
+            <p class="text-xs text-arc-dim mt-1 font-sans">Payment verification is mandatory prior to slot allocation.</p>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] font-mono text-arc-dim uppercase tracking-wider block">ENTRY FEE</span>
+            <span class="text-sm font-mono font-bold text-arc-cyan bg-arc-surface px-2.5 py-0.5 rounded-lg border border-arc-border">₹50.00</span>
+          </div>
+        </div>
+
+        <form id="registrationForm" class="space-y-4">
+          <!-- Full Name -->
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1.5" for="playerName">
+              FULL NAME <span class="text-arc-cyan">*</span>
+            </label>
+            <input type="text" id="playerName" required placeholder="e.g. Liam Sterling" maxlength="32" class="w-full bg-arc-void border border-arc-border focus:border-arc-cyan focus:outline-none rounded-xl px-4 py-2.5 text-xs text-white placeholder-slate-600 transition">
+          </div>
+
+          <!-- Actual In-Game Name (IGN) -->
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1.5" for="playerIGN">
+              eFOOTBALL IN-GAME NAME (IGN) <span class="text-arc-cyan">*</span>
+            </label>
+            <input type="text" id="playerIGN" required placeholder="Exact eFootball username" maxlength="32" class="w-full bg-arc-void border border-arc-border focus:border-arc-cyan focus:outline-none rounded-xl px-4 py-2.5 text-xs text-white font-mono placeholder-slate-600 transition">
+            <p class="text-[10px] text-arc-dim mt-1">Must match in-game name for friend match lobby verification.</p>
+          </div>
+
+          <!-- Playstyle Selection -->
+          <div>
+            <label class="block text-xs font-mono text-slate-300 mb-1.5" for="playerPlaystyle">
+              TACTICAL PLAYSTYLE <span class="text-arc-cyan">*</span>
+            </label>
+            <select id="playerPlaystyle" required class="w-full bg-arc-void border border-arc-border focus:border-arc-cyan focus:outline-none rounded-xl px-4 py-2.5 text-xs text-white font-mono transition">
+              <option value="" disabled selected>Select Primary Team Playstyle</option>
+              <option value="Quick Counter">Quick Counter</option>
+              <option value="Possession Game">Possession Game</option>
+              <option value="Long Ball Counter">Long Ball Counter</option>
+              <option value="Out Wide">Out Wide</option>
+              <option value="Long Ball">Long Ball</option>
+            </select>
+          </div>
+
+          <!-- Compulsory Payment Gateway Section -->
+          <div class="mt-5 pt-4 border-t border-arc-border">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-mono text-slate-300 uppercase tracking-wider font-bold">UPI PAYMENT TRANSFER</span>
+              <span class="text-[10px] font-mono text-arc-emerald font-bold">FIXED: ₹50</span>
+            </div>
+
+            <!-- UPI Recipient Card -->
+            <div class="p-3.5 rounded-xl bg-arc-surface border border-arc-border mb-3 space-y-2">
+              <div class="text-[11px] text-arc-dim flex items-center justify-between">
+                <span>Scan or Transfer to Tournament UPI:</span>
+                <span class="text-[10px] text-arc-cyan font-mono">GPay / PhonePe / Paytm</span>
+              </div>
+              <div class="flex items-center justify-between bg-arc-void px-3.5 py-2.5 rounded-lg border border-arc-borderLight">
+                <span id="displayUpiId" class="font-mono text-xs sm:text-sm font-bold text-white select-all">arc.esports@upi</span>
+                <button type="button" id="btnCopyUpi" class="text-xs font-mono text-arc-cyan hover:text-white px-2 py-1 rounded bg-arc-surface border border-arc-borderLight transition flex items-center space-x-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                  <span>Copy</span>
+                </button>
+              </div>
+              <div class="flex items-start space-x-1.5 text-[10px] text-arc-amber">
+                <span class="font-bold">⚠️ Notice:</span>
+                <span>Entries without a valid, real 12-digit Bank UTR will be rejected during cross-check with bank statements.</span>
+              </div>
+            </div>
+
+            <!-- 12-Digit UTR Input Field -->
+            <div>
+              <label class="block text-xs font-mono text-slate-300 mb-1.5" for="playerUTR">
+                12-DIGIT TRANSACTION REFERENCE / UTR <span class="text-arc-cyan">*</span>
+              </label>
+              <input type="text" id="playerUTR" required pattern="[0-9]{12}" maxlength="12" placeholder="e.g. 428901234567" class="w-full bg-arc-void border border-arc-border focus:border-arc-cyan focus:outline-none rounded-xl px-4 py-2.5 text-xs text-white font-mono placeholder-slate-600 transition">
+              <p class="text-[10px] text-arc-dim mt-1 font-mono">Found in your payment app under "UPI Ref No." or "UTR".</p>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-3">
+            <button type="submit" id="btnSubmitForm" class="w-full py-3.5 text-xs font-mono font-bold uppercase tracking-wider text-black bg-arc-cyan hover:bg-arc-cyan/90 rounded-xl transition duration-200 glow-cyan flex items-center justify-center space-x-2">
+              <span id="btnSubmitText">Verify UTR & Lock Slot</span>
+              <div id="submitSpinner" class="hidden w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Success Receipt Card (Displays after successful registration) -->
+      <div id="successReceipt" class="hidden bg-arc-card border border-arc-cyan/40 rounded-2xl p-6 sm:p-7 text-center space-y-4 glow-card">
+        <div class="w-14 h-14 mx-auto rounded-full bg-arc-cyan/15 border border-arc-cyan/40 flex items-center justify-center text-arc-cyan">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <div>
+          <span class="text-[10px] font-mono text-arc-cyan uppercase tracking-widest block font-bold">REGISTRATION RECORDED</span>
+          <h3 class="font-mono text-lg font-bold text-white mt-0.5">TOURNAMENT SLOT CLAIMED</h3>
+          <p class="text-xs text-arc-dim font-sans mt-0.5">Your entry details and ₹50 transaction have been logged to the central database.</p>
+        </div>
+
+        <div class="bg-arc-surface p-4 rounded-xl border border-arc-border text-left font-mono text-xs space-y-2.5">
+          <div class="flex justify-between items-center"><span class="text-arc-dim">SLOT RESERVED:</span> <span id="recSlotNum" class="text-arc-cyan font-bold text-sm">#01 / 16</span></div>
+          <div class="flex justify-between items-center"><span class="text-arc-dim">PLAYER NAME:</span> <span id="recPlayerName" class="text-white font-medium">Liam Sterling</span></div>
+          <div class="flex justify-between items-center"><span class="text-arc-dim">eFOOTBALL IGN:</span> <span id="recIGN" class="text-arc-cyan font-bold">Liam#99</span></div>
+          <div class="flex justify-between items-center"><span class="text-arc-dim">TACTIC:</span> <span id="recPlaystyle" class="text-slate-300">Quick Counter</span></div>
+          <div class="flex justify-between items-center"><span class="text-arc-dim">ENTRY FEE:</span> <span class="text-arc-emerald font-bold">₹50 (Paid)</span></div>
+          <div class="flex justify-between items-center"><span class="text-arc-dim">SUBMITTED UTR:</span> <span id="recUTR" class="text-slate-300 font-mono">428901234567</span></div>
+          <div class="flex justify-between items-center pt-1 border-t border-arc-border"><span class="text-arc-dim">DATABASE STATUS:</span> <span id="recDbStatus" class="text-arc-emerald font-bold">Synced to Google Sheet</span></div>
+        </div>
+
+        <div class="pt-2 flex flex-col sm:flex-row gap-2.5">
+          <button id="btnShareWhatsAppProof" class="w-full sm:w-1/2 py-2.5 px-3 rounded-xl border border-arc-emerald/40 bg-arc-emerald/10 text-arc-emerald font-mono text-xs font-bold hover:bg-arc-emerald/20 transition flex items-center justify-center space-x-1.5">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.149.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.768-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.087-.179.182-.077.357.101.173.452.746.97 1.208.666.593 1.229.777 1.403.864.173.087.275.072.376-.043.101-.116.433-.505.549-.679.116-.173.231-.145.39-.087.159.058 1.011.477 1.184.564.173.087.289.13.332.203.043.072.043.419-.101.824z"/></svg>
+            <span>Share Receipt</span>
+          </button>
+          <button id="btnDismissReceipt" class="w-full sm:w-1/2 py-2.5 px-3 rounded-xl border border-arc-border bg-arc-surface text-arc-dim hover:text-white font-mono text-xs transition">
+            Register Another Player
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="lg:col-span-5 space-y-4">
+      <div class="bg-arc-card border border-arc-border rounded-2xl p-5 glow-card">
+        <div class="flex items-center justify-between pb-3 border-b border-arc-border">
+          <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-arc-cyan"></span>
+            <h3 class="font-mono text-xs font-bold text-white uppercase tracking-wider">OFFICIAL 16-SLOT BRACKET</h3>
+          </div>
+          <span id="bracketSlotCounter" class="text-[10px] font-mono px-2 py-0.5 rounded bg-arc-surface border border-arc-border text-arc-cyan font-bold">0 / 16 CLAIMED</span>
+        </div>
+
+        <!-- 16-Player Slot Visualizer (Grid of 16 interactive badges) -->
+        <div class="mt-3.5 space-y-2 max-h-[560px] overflow-y-auto pr-1" id="bracketSlotsList">
+          <!-- Populated dynamically with slots 1 through 16 -->
+        </div>
+
+        <!-- Grid summary & actions -->
+        <div class="pt-3 mt-3 border-t border-arc-border flex items-center justify-between text-xs font-mono text-arc-dim">
+          <button id="btnCopyRosterIGNs" class="hover:text-arc-cyan transition flex items-center space-x-1.5 text-[11px]">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+            <span>Copy All IGNs</span>
+          </button>
+          <span class="text-[10px] text-arc-slate font-mono">16 MAX PLAYERS</span>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="adminModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+    <div class="w-full max-w-lg bg-arc-card border border-arc-borderLight rounded-2xl p-6 shadow-2xl relative glow-card max-h-[90vh] flex flex-col">
+      
+      <!-- PIN Authentication Screen -->
+      <div id="adminPinScreen" class="py-4 text-center space-y-4">
+        <div class="w-12 h-12 mx-auto rounded-full bg-arc-cyan/10 border border-arc-cyan/30 flex items-center justify-center text-arc-cyan">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+        <div>
+          <h3 class="font-mono text-base font-bold text-white tracking-wider">ADMINISTRATOR AUTHENTICATION</h3>
+          <p class="text-xs text-arc-dim mt-1">Enter your master PIN to configure UPI, manage Google Sheets Webhooks, or verify slots.</p>
+        </div>
+        <div class="max-w-xs mx-auto">
+          <input type="password" id="adminPinInput" maxlength="6" placeholder="Enter PIN" class="w-full bg-arc-void border border-arc-border focus:border-arc-cyan focus:outline-none rounded-xl px-4 py-2.5 text-center text-lg font-mono tracking-widest text-white mb-3">
+          <div class="flex gap-2">
+            <button id="btnCloseAdminModal" class="w-1/2 py-2.5 rounded-xl border border-arc-border bg-arc-surface text-xs font-mono text-arc-dim hover:text-white transition">Cancel</button>
+            <button id="btnUnlockAdmin" class="w-1/2 py-2.5 rounded-xl bg-arc-cyan text-black text-xs font-mono font-bold uppercase tracking-wider hover:bg-arc-cyan/90 transition glow-cyan">Unlock</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Authenticated Admin Control Panel -->
+      <div id="adminPanelScreen" class="hidden flex-col h-full space-y-4 overflow-y-auto pr-1">
+        <div class="flex items-center justify-between pb-3 border-b border-arc-border">
+          <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-arc-emerald animate-pulse"></span>
+            <span class="font-mono text-xs font-bold text-white uppercase tracking-wider">ADMIN CONTROL CENTER</span>
+          </div>
+          <button id="btnLockAdmin" class="text-xs font-mono text-arc-rose hover:underline">Lock Session</button>
+        </div>
+
+        <!-- Setting: UPI ID Config -->
+        <div>
+          <label class="block text-xs font-mono text-slate-300 mb-1" for="adminUpiInput">
+            PAYMENT RECIPIENT UPI ID
+          </label>
+          <input type="text" id="adminUpiInput" class="w-full bg-arc-void border border-arc-border focus:border-arc-cyan focus:outline-none rounded-xl px-3.5 py-2 text-xs font-mono text-white">
+          <p class="text-[10px] text-arc-dim mt-1">This UPI ID is displayed on the registration form for competitor transfers.</p>
+        </div>
+
+        <!-- Setting: Webhook Endpoint -->
+        <div>
+          <label class="block text-xs font-mono text-slate-300 mb-1" for="adminWebhookInput">
+            GOOGLE APPS SCRIPT WEB APP URL
+          </label>
+          <input type="url" id="adminWebhookInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full bg-arc-void border border-arc-border focus:border-arc-cyan focus:outline-none rounded-xl px-3.5 py-2 text-xs font-mono text-white">
+          <p class="text-[10px] text-arc-dim mt-1">Paste the deployed Google Apps Script Web App URL from your Google Sheet.</p>
+        </div>
+
+        <!-- Actions row -->
+        <div class="flex gap-2 pt-1">
+          <button id="btnSaveAdminSettings" class="w-full py-2.5 rounded-xl bg-arc-cyan text-black font-mono text-xs font-bold uppercase tracking-wider hover:bg-arc-cyan/90 transition glow-cyan">
+            Save System Settings
+          </button>
+        </div>
+
+        <!-- Registered Players List & Quick UTR Verification -->
+        <div class="pt-3 border-t border-arc-border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-xs font-bold text-white uppercase">SUBMITTED REGISTRATIONS</span>
+            <span id="adminRegCountBadge" class="text-[10px] font-mono text-arc-cyan">0 Players</span>
+          </div>
+          <div id="adminPlayerList" class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+            <!-- Populated with registrations -->
+          </div>
+        </div>
+
+        <!-- Roster Maintenance & Danger Zone -->
+        <div class="pt-3 border-t border-arc-border flex items-center justify-between">
+          <a href="https://docs.google.com/spreadsheets/d/1cPXCd_FT7XIxgbuIFkaogqr8cRvSYUAyi2Jp6gzAlUU/edit" target="_blank" class="text-xs font-mono text-arc-cyan hover:underline flex items-center space-x-1">
+            <span>Open Connected Sheet ↗</span>
+          </a>
+          <button id="btnResetRosterData" class="px-3 py-1.5 text-xs font-mono text-arc-rose bg-arc-rose/10 hover:bg-arc-rose/20 border border-arc-rose/30 rounded-xl transition">
+            Clear All 16 Slots
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div id="scriptGuideModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md hidden">
+    <div class="w-full max-w-2xl bg-arc-card border border-arc-borderLight rounded-2xl p-6 shadow-2xl relative glow-card max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between pb-3 border-b border-arc-border shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-8 h-8 rounded-lg bg-arc-cyan/10 border border-arc-cyan/30 flex items-center justify-center text-arc-cyan">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+          </div>
+          <div>
+            <h3 class="font-mono text-sm font-bold text-white tracking-wider">CONNECT SPREADSHEET (1-MINUTE GUIDE)</h3>
+            <p class="text-[10px] text-arc-dim font-mono">Linked Sheet ID: 1cPXCd_FT7XIxgbuIFkaogqr8cRvSYUAyi2Jp6gzAlUU</p>
+          </div>
+        </div>
+        <button id="btnCloseScriptGuide" class="text-arc-dim hover:text-white p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4 overflow-y-auto pr-1 flex-1 text-xs text-slate-300">
+        <div class="p-3.5 rounded-xl bg-arc-surface border border-arc-border">
+          <span class="font-mono text-[10px] font-bold text-arc-cyan uppercase tracking-wider block mb-1">STEP 1: OPEN APPS SCRIPT IN YOUR SHEET</span>
+          <p class="leading-relaxed text-arc-slate">
+            Open the tournament sheet: <a href="https://docs.google.com/spreadsheets/d/1cPXCd_FT7XIxgbuIFkaogqr8cRvSYUAyi2Jp6gzAlUU/edit" target="_blank" class="text-arc-cyan underline font-mono">Arc eSports - eFootball Tournament Registrations</a>. In the top navigation, click <strong>Extensions</strong> → <strong>Apps Script</strong>.
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-arc-surface border border-arc-border space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-[10px] font-bold text-arc-cyan uppercase tracking-wider">STEP 2: PASTE THIS RECEIVER CODE</span>
+            <button id="btnCopyAppsScript" class="px-2 py-1 text-[10px] font-mono text-arc-cyan bg-arc-cyan/10 hover:bg-arc-cyan/20 border border-arc-cyan/30 rounded-md transition flex items-center space-x-1">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path></svg>
+              <span>Copy Code</span>
+            </button>
+          </div>
+          <pre class="bg-arc-void p-3 rounded-lg border border-arc-border font-mono text-[11px] text-slate-300 overflow-x-auto leading-relaxed"><code id="rawAppsScriptCode">function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    var timestamp = new Date();
+    
+    // Auto-create header row if sheet is fresh
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["Timestamp", "Slot", "Player Name", "eFootball IGN", "Playstyle", "Entry Fee", "12-Digit UTR", "Status"]);
+      sheet.getRange(1, 1, 1, 8).setFontWeight("bold").setBackground("#0A0D14").setFontColor("#00F2FE");
+    }
+    
+    sheet.appendRow([
+      timestamp,
+      data.slot,
+      data.name,
+      data.ign,
+      data.playstyle,
+      data.fee,
+      "'" + data.utr,
+      "Pending Verification"
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ status: "success", slot: data.slot }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</code></pre>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-arc-surface border border-arc-border">
+          <span class="font-mono text-[10px] font-bold text-arc-cyan uppercase tracking-wider block mb-1">STEP 3: DEPLOY WEB APP & CONNECT</span>
+          <ol class="list-decimal list-inside space-y-1 text-arc-slate leading-relaxed">
+            <li>Click <strong>Deploy</strong> → <strong>New deployment</strong>.</li>
+            <li>Select type: <strong>Web app</strong>.</li>
+            <li>Set <em>Execute as:</em> <strong>Me</strong>.</li>
+            <li>Set <em>Who has access:</em> <strong>Anyone</strong> (necessary for registrations to submit).</li>
+            <li>Copy the resulting Web App URL, open <strong>Admin Portal (PIN: 140612)</strong>, and paste it into the Webhook field!</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-10 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-arc-surface border border-arc-cyan/50 text-white px-4 py-2.5 rounded-xl shadow-2xl flex items-center space-x-2 text-xs font-mono">
+      <svg class="w-4 h-4 text-arc-cyan shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+      <span id="toastMessage">Action completed</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-arc-border bg-arc-void/60 py-4 text-center text-[11px] font-mono text-arc-dim">
+    ARC ESPORTS // eFOOTBALL 16-PLAYER CHAMPIONSHIP · AUTOMATED GOOGLE SHEETS PIPELINE
+  </footer>
+
+  <script>
+    const MASTER_ADMIN_PIN = "140612";
+    const MAX_BRACKET_SLOTS = 16;
+    const STORAGE_KEY_PLAYERS = "arc_efootball_reg_players_v2";
+    const STORAGE_KEY_UPI = "arc_efootball_reg_upi_v2";
+    const STORAGE_KEY_WEBHOOK = "arc_efootball_reg_webhook_v2";
+
+    // Application State
+    let players = [];
+    let upiId = "arc.esports@upi";
+    let webhookUrl = "";
+    let lastRegisteredPlayer = null;
+
+    // Toast Utility
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.remove('translate-y-10', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-10', 'opacity-0');
+      }, 2600);
+    }
+
+    // HTML Sanitizer
+    function sanitize(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Copy to clipboard helper
+    function copyToClipboard(text, successMessage) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast(successMessage);
+      } catch (err) {
+        showToast('Copy failed');
+      }
+      document.body.removeChild(textarea);
+    }
+
+    // Initialization
+    function init() {
+      upiId = localStorage.getItem(STORAGE_KEY_UPI) || "arc.esports@upi";
+      webhookUrl = localStorage.getItem(STORAGE_KEY_WEBHOOK) || "";
+      
+      const stored = localStorage.getItem(STORAGE_KEY_PLAYERS);
+      if (stored) {
+        try {
+          players = JSON.parse(stored);
+        } catch (e) {
+          players = [];
+        }
+      } else {
+        players = [];
+      }
+
+      document.getElementById('displayUpiId').textContent = upiId;
+      document.getElementById('adminUpiInput').value = upiId;
+      document.getElementById('adminWebhookInput').value = webhookUrl;
+
+      updateSlotStats();
+      renderBracketVisualizer();
+      renderAdminPlayerList();
+    }
+
+    // Update Counters and Progress Bar
+    function updateSlotStats() {
+      const count = players.length;
+      const remaining = Math.max(0, MAX_BRACKET_SLOTS - count);
+
+      document.getElementById('slotRatioText').innerHTML = `${count}<span class="text-arc-dim text-lg">/16</span>`;
+      document.getElementById('bracketSlotCounter').textContent = `${count} / 16 CLAIMED`;
+      document.getElementById('remainingSlotsSub').textContent = `${remaining} SLOTS REMAINING`;
+
+      const pct = Math.min(100, Math.round((count / MAX_BRACKET_SLOTS) * 100));
+      document.getElementById('slotProgressBar').style.width = `${pct}%`;
+
+      const statusPill = document.getElementById('slotStatusPill');
+      const dot = document.getElementById('slotIndicatorDot');
+      const formSection = document.getElementById('formSection');
+      const fullAlert = document.getElementById('fullBracketAlert');
+
+      if (count >= MAX_BRACKET_SLOTS) {
+        statusPill.textContent = 'LOCKED';
+        statusPill.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-arc-rose/15 text-arc-rose border border-arc-rose/30 tracking-wider';
+        dot.className = 'w-3.5 h-3.5 rounded-full bg-arc-rose shrink-0';
+        formSection.classList.add('hidden');
+        fullAlert.classList.remove('hidden');
+      } else {
+        statusPill.textContent = `${remaining} OPEN`;
+        statusPill.className = 'text-[10px] px-2 py-0.5 rounded font-mono font-bold bg-arc-cyan/15 text-arc-cyan border border-arc-cyan/30 tracking-wider';
+        dot.className = 'w-3.5 h-3.5 rounded-full bg-arc-cyan animate-pulse shrink-0';
+        if (document.getElementById('successReceipt').classList.contains('hidden')) {
+          formSection.classList.remove('hidden');
+        }
+        fullAlert.classList.add('hidden');
+      }
+    }
+
+    // Render Visual 16 Slots (Slots 1 to 16)
+    function renderBracketVisualizer() {
+      const list = document.getElementById('bracketSlotsList');
+      list.innerHTML = '';
+
+      for (let i = 0; i < MAX_BRACKET_SLOTS; i++) {
+        const player = players[i];
+        const slotEl = document.createElement('div');
+        const slotNumber = String(i + 1).padStart(2, '0');
+
+        if (player) {
+          slotEl.className = 'p-2.5 rounded-xl border border-arc-borderLight bg-arc-surface flex items-center justify-between text-xs font-mono transition';
+          slotEl.innerHTML = `
+            <div class="flex items-center space-x-2.5 truncate">
+              <span class="w-6 h-6 rounded bg-arc-cyan/10 border border-arc-cyan/30 text-arc-cyan flex items-center justify-center font-bold text-[10px] shrink-0">#${slotNumber}</span>
+              <div class="truncate">
+                <div class="text-white font-bold truncate leading-tight">${sanitize(player.ign)}</div>
+                <div class="text-[10px] text-arc-dim truncate">${sanitize(player.name)} · <span class="text-arc-slate">${sanitize(player.playstyle)}</span></div>
+              </div>
+            </div>
+            <span class="text-[9px] px-1.5 py-0.5 rounded bg-arc-emerald/10 text-arc-emerald border border-arc-emerald/30 font-bold shrink-0">CLAIMED</span>
+          `;
+        } else {
+          slotEl.className = 'p-2.5 rounded-xl border border-dashed border-arc-border bg-arc-void/40 flex items-center justify-between text-xs font-mono text-arc-dim';
+          slotEl.innerHTML = `
+            <div class="flex items-center space-x-2.5">
+              <span class="w-6 h-6 rounded bg-arc-surface border border-arc-border text-slate-500 flex items-center justify-center font-bold text-[10px] shrink-0">#${slotNumber}</span>
+              <span class="text-[11px] text-slate-500">Available Bracket Slot</span>
+            </div>
+            <span class="text-[9px] text-slate-500 uppercase tracking-widest font-mono">AVAILABLE</span>
+          `;
+        }
+
+        list.appendChild(slotEl);
+      }
+    }
+
+    // Copy UPI ID button
+    document.getElementById('btnCopyUpi').addEventListener('click', () => {
+      copyToClipboard(upiId, 'UPI ID copied to clipboard!');
+    });
+
+    // Form Submission Handling
+    document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (players.length >= MAX_BRACKET_SLOTS) {
+        showToast('Tournament bracket is completely full!');
+        return;
+      }
+
+      const name = document.getElementById('playerName').value.trim();
+      const ign = document.getElementById('playerIGN').value.trim();
+      const playstyle = document.getElementById('playerPlaystyle').value;
+      const utr = document.getElementById('playerUTR').value.trim();
+
+      // Strict 12-digit numeric validation for bank reference
+      if (!/^\d{12}$/.test(utr)) {
+        showToast('Please enter a valid 12-digit numeric UTR/Ref number.');
+        return;
+      }
+
+      // Check for duplicate IGN or duplicate UTR
+      const duplicateIGN = players.some(p => p.ign.toLowerCase() === ign.toLowerCase());
+      if (duplicateIGN) {
+        showToast('This in-game name is already registered!');
+        return;
+      }
+
+      const duplicateUTR = players.some(p => p.utr === utr);
+      if (duplicateUTR) {
+        showToast('This UTR has already been submitted for another slot.');
+        return;
+      }
+
+      // UI Loading state
+      const btn = document.getElementById('btnSubmitForm');
+      const btnText = document.getElementById('btnSubmitText');
+      const spinner = document.getElementById('submitSpinner');
+      btnText.textContent = 'Syncing to Database...';
+      spinner.classList.remove('hidden');
+      btn.disabled = true;
+
+      const slotNumber = players.length + 1;
+      const newEntry = {
+        slot: slotNumber,
+        name: name,
+        ign: ign,
+        playstyle: playstyle,
+        fee: "₹50",
+        utr: utr,
+        timestamp: new Date().toISOString()
+      };
+
+      let webhookDelivered = false;
+
+      // Dispatch to Google Apps Script Webhook
+      if (webhookUrl && webhookUrl.startsWith('https://script.google.com')) {
+        try {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newEntry)
+          });
+          webhookDelivered = true;
+        } catch (err) {
+          console.warn('Webhook dispatch failed:', err);
+        }
+      }
+
+      // Save locally
+      players.push(newEntry);
+      localStorage.setItem(STORAGE_KEY_PLAYERS, JSON.stringify(players));
+      lastRegisteredPlayer = newEntry;
+
+      updateSlotStats();
+      renderBracketVisualizer();
+      renderAdminPlayerList();
+
+      // Populate confirmation receipt
+      document.getElementById('recSlotNum').textContent = `#${String(slotNumber).padStart(2, '0')} / 16`;
+      document.getElementById('recPlayerName').textContent = newEntry.name;
+      document.getElementById('recIGN').textContent = newEntry.ign;
+      document.getElementById('recPlaystyle').textContent = newEntry.playstyle;
+      document.getElementById('recUTR').textContent = newEntry.utr;
+
+      const dbStatusEl = document.getElementById('recDbStatus');
+      if (webhookDelivered) {
+        dbStatusEl.textContent = 'Synced to Google Sheet';
+        dbStatusEl.className = 'text-arc-emerald font-bold';
+      } else if (webhookUrl) {
+        dbStatusEl.textContent = 'Dispatched to Google Sheet';
+        dbStatusEl.className = 'text-arc-emerald font-bold';
+      } else {
+        dbStatusEl.textContent = 'Recorded Locally (Set Webhook in Admin)';
+        dbStatusEl.className = 'text-arc-amber font-bold';
+      }
+
+      // Toggle views
+      document.getElementById('formSection').classList.add('hidden');
+      document.getElementById('successReceipt').classList.remove('hidden');
+      document.getElementById('registrationForm').reset();
+
+      btnText.textContent = 'Verify UTR & Lock Slot';
+      spinner.classList.add('hidden');
+      btn.disabled = false;
+      showToast('Slot locked and registered!');
+    });
+
+    // Dismiss receipt to allow registering another
+    document.getElementById('btnDismissReceipt').addEventListener('click', () => {
+      document.getElementById('successReceipt').classList.add('hidden');
+      if (players.length < MAX_BRACKET_SLOTS) {
+        document.getElementById('formSection').classList.remove('hidden');
+      } else {
+        document.getElementById('fullBracketAlert').classList.remove('hidden');
+      }
+    });
+
+    // WhatsApp receipt share button
+    document.getElementById('btnShareWhatsAppProof').addEventListener('click', () => {
+      if (!lastRegisteredPlayer) return;
+      const text = `*ARC eSPORTS eFOOTBALL 16 CUP — REGISTRATION RECEIPT*\n` +
+        `• Slot Reserved: #${String(lastRegisteredPlayer.slot).padStart(2, '0')}/16\n` +
+        `• Player Name: ${lastRegisteredPlayer.name}\n` +
+        `• eFootball IGN: ${lastRegisteredPlayer.ign}\n` +
+        `• Playstyle: ${lastRegisteredPlayer.playstyle}\n` +
+        `• Entry Fee: ₹50 Paid\n` +
+        `• Bank UTR: ${lastRegisteredPlayer.utr}\n` +
+        `Tournament Bracket Slot Confirmed!`;
+
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    });
+
+    // Copy all IGNs for organizer
+    document.getElementById('btnCopyRosterIGNs').addEventListener('click', () => {
+      if (players.length === 0) {
+        showToast('No players registered yet.');
+        return;
+      }
+      const text = players.map((p, idx) => `${idx + 1}. ${p.ign} (${p.name}) - ${p.playstyle}`).join('\n');
+      copyToClipboard(text, 'All 16 IGNs copied to clipboard!');
+    });
+
+    // Copy Apps Script code snippet
+    document.getElementById('btnCopyAppsScript').addEventListener('click', () => {
+      const code = document.getElementById('rawAppsScriptCode').innerText;
+      copyToClipboard(code, 'Apps Script code copied!');
+    });
+
+    // Modal controls: Admin Modal & PIN logic
+    const adminModal = document.getElementById('adminModal');
+    const adminPinScreen = document.getElementById('adminPinScreen');
+    const adminPanelScreen = document.getElementById('adminPanelScreen');
+    const adminPinInput = document.getElementById('adminPinInput');
+
+    document.getElementById('btnOpenAdmin').addEventListener('click', () => {
+      adminModal.classList.remove('hidden');
+      adminPinInput.value = '';
+    });
+
+    document.getElementById('btnCloseAdminModal').addEventListener('click', () => {
+      adminModal.classList.add('hidden');
+    });
+
+    document.getElementById('btnUnlockAdmin').addEventListener('click', () => {
+      if (adminPinInput.value.trim() === MASTER_ADMIN_PIN) {
+        adminPinScreen.classList.add('hidden');
+        adminPanelScreen.classList.remove('hidden');
+        adminPanelScreen.classList.add('flex');
+        renderAdminPlayerList();
+        showToast('Admin Portal Unlocked');
+      } else {
+        showToast('Incorrect Admin PIN.');
+      }
+    });
+
+    document.getElementById('btnLockAdmin').addEventListener('click', () => {
+      adminPanelScreen.classList.add('hidden');
+      adminPanelScreen.classList.remove('flex');
+      adminPinScreen.classList.remove('hidden');
+      adminModal.classList.add('hidden');
+    });
+
+    // Save Admin Settings (UPI & Webhook)
+    document.getElementById('btnSaveAdminSettings').addEventListener('click', () => {
+      const newUpi = document.getElementById('adminUpiInput').value.trim();
+      const newWebhook = document.getElementById('adminWebhookInput').value.trim();
+
+      if (newUpi) {
+        upiId = newUpi;
+        localStorage.setItem(STORAGE_KEY_UPI, upiId);
+        document.getElementById('displayUpiId').textContent = upiId;
+      }
+
+      webhookUrl = newWebhook;
+      localStorage.setItem(STORAGE_KEY_WEBHOOK, webhookUrl);
+
+      showToast('Admin configuration saved!');
+    });
+
+    // Render registered entries inside admin panel
+    function renderAdminPlayerList() {
+      const container = document.getElementById('adminPlayerList');
+      const countBadge = document.getElementById('adminRegCountBadge');
+      countBadge.textContent = `${players.length} Players`;
+      container.innerHTML = '';
+
+      if (players.length === 0) {
+        container.innerHTML = '<div class="text-xs font-mono text-arc-dim text-center py-2">No registrations recorded yet.</div>';
+        return;
+      }
+
+      players.forEach((p, idx) => {
+        const item = document.createElement('div');
+        item.className = 'p-2 rounded-lg bg-arc-surface border border-arc-border text-xs font-mono flex items-center justify-between';
+        item.innerHTML = `
+          <div class="truncate pr-2">
+            <span class="text-arc-cyan font-bold">#${p.slot}</span>
+            <span class="text-white font-bold">${sanitize(p.ign)}</span>
+            <span class="text-arc-dim">(${sanitize(p.name)})</span>
+            <div class="text-[10px] text-arc-dim">UTR: <span class="text-arc-slate font-bold">${p.utr}</span> · Fee: ₹50</div>
+          </div>
+          <button onclick="removePlayer(${idx})" class="text-arc-rose hover:text-white px-2 py-1 rounded bg-arc-void border border-arc-rose/30 text-[10px] shrink-0">Remove</button>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Admin Player Deletion function
+    window.removePlayer = function(index) {
+      if (confirm(`Remove player ${players[index].ign} from slot #${players[index].slot}?`)) {
+        players.splice(index, 1);
+        // Re-index remaining slots
+        players.forEach((p, i) => p.slot = i + 1);
+        localStorage.setItem(STORAGE_KEY_PLAYERS, JSON.stringify(players));
+        updateSlotStats();
+        renderBracketVisualizer();
+        renderAdminPlayerList();
+        showToast('Player removed from roster.');
+      }
+    };
+
+    // Admin Reset Entire Roster
+    document.getElementById('btnResetRosterData').addEventListener('click', () => {
+      if (confirm('Are you sure you want to reset all 16 slots? This will wipe the local roster.')) {
+        players = [];
+        localStorage.removeItem(STORAGE_KEY_PLAYERS);
+        updateSlotStats();
+        renderBracketVisualizer();
+        renderAdminPlayerList();
+        document.getElementById('successReceipt').classList.add('hidden');
+        document.getElementById('formSection').classList.remove('hidden');
+        showToast('All 16 slots have been reset.');
+      }
+    });
+
+    // Modal controls: Apps Script Guide Modal
+    const scriptGuideModal = document.getElementById('scriptGuideModal');
+    document.getElementById('btnOpenScriptGuide').addEventListener('click', () => {
+      scriptGuideModal.classList.remove('hidden');
+    });
+    document.getElementById('btnCloseScriptGuide').addEventListener('click', () => {
+      scriptGuideModal.classList.add('hidden');
+    });
+
+    // Close modals on outside click
+    window.addEventListener('click', (e) => {
+      if (e.target === adminModal) adminModal.classList.add('hidden');
+      if (e.target === scriptGuideModal) scriptGuideModal.classList.add('hidden');
+    });
+
+    // Run setup on document load
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
